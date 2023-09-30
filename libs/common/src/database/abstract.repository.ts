@@ -48,6 +48,14 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return this.model.find(filterQuery, {}, { lean: true });
   }
 
+  async findRandom() {
+    return this.model.aggregate([
+      {
+        $sample: { size: 3 }
+      }
+    ]);
+  }
+
   async findOneAndDelete(filterQuery: FilterQuery<TDocument>) {
     return this.model.findOneAndDelete(filterQuery, { lean: true });
   }

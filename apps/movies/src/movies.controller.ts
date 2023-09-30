@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { MoviesService } from './movies.service';
+import {Movie} from "./interface/movie";
 
 @Controller('movies')
 export class MoviesController {
@@ -10,11 +11,11 @@ export class MoviesController {
     return this.moviesService.createData();
   }
   @Get('getAllMovies')
-  getAllMovies(): Promise<void> {
+  getAllMovies(): Promise<any> {
     return this.moviesService.getAllMovies();
   }
   @Get()
-  getInitialMovies(): Promise<void> {
-    return this.moviesService.createData();
+  getInitialMovies(): Promise<Movie[]> {
+    return this.moviesService.getRandomItems();
   }
 }

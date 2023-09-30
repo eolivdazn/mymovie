@@ -13,7 +13,7 @@ export class MovieDocument extends AbstractDocument {
     genre_ids: number[];
 
     @Prop()
-    id: number;
+    id_themoviedb: number;
 
     @Prop()
     original_language: string;
