@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDocument } from '@app/common';
+import {Cast} from "../interface/cast";
 
 @Schema({ versionKey: false })
 export class MovieDocument extends AbstractDocument {
@@ -47,6 +48,9 @@ export class MovieDocument extends AbstractDocument {
 
     @Prop()
     rating: number;
+
+    @Prop()
+    cast: Cast[];
 }
 
 export const MovieSchema =

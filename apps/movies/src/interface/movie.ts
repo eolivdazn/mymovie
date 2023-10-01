@@ -1,3 +1,5 @@
+import {Cast} from "./cast";
+
 export interface Movie {
     adult: boolean;
     backdrop_path: string;
@@ -14,5 +16,6 @@ export interface Movie {
     vote_average: number;
     vote_count: number;
     rating: number;
+    cast: Cast[];
 
 }
