@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import {Movie} from "./interface/movie";
+import {CreateRecommendationDto} from "./dto/create-recommendation";
 
 @Controller('movies')
 export class MoviesController {
@@ -17,5 +18,15 @@ export class MoviesController {
   @Get()
   getInitialMovies(): Promise<Movie[]> {
     return this.moviesService.getRandomItems();
+  }
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.moviesService.findOne(id);
+  }
+  @Post('recommendation')
+  async insertRecommendation(
+      @Body() createRecommendationDto: CreateRecommendationDto,) {
+    console.log(createRecommendationDto)
+    return this.moviesService.insertRecommendation(createRecommendationDto);
   }
 }

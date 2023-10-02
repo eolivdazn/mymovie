@@ -2,13 +2,18 @@ import {Injectable} from '@nestjs/common';
 import {MoviesRepository} from "./movies.repository";
 import {Movie} from "./interface/movie";
 import {Cast} from "./interface/cast";
+import {Crew} from "./interface/crew";
+import {string} from "joi";
+import {RecommendationRepository} from "./recommendation.repository";
+import {CreateRecommendationDto} from "./dto/create-recommendation";
 
 const API_KEY = process.env.API_KEY
 
 @Injectable()
 export class MoviesService {
 
-    constructor(private readonly moviesRepository: MoviesRepository) {
+    constructor(private readonly moviesRepository: MoviesRepository,
+                private readonly recommendationRepository: RecommendationRepository) {
     }
 
     async getCasts(id: number) {
@@ -22,8 +27,7 @@ export class MoviesService {
         };
 
         const result =  await fetch(url, options)
-        const cast = await result.json()
-        return cast.cast
+        return await result.json()
 
     }
 
@@ -45,8 +49,11 @@ export class MoviesService {
             const moviesList = await result.json()
 
             for (const movie of moviesList.results as Movie[]) {
-              const cast = await this.getCasts(movie.id)
-                await this.moviesRepository.create({...movie, id_themoviedb: movie.id, cast: cast as Cast[]});
+              const {cast,crew} = await this.getCasts(movie.id)
+                await this.moviesRepository.create({...movie, id_themoviedb: movie.id,
+                    cast: cast as Cast[],
+                    crew: crew as Crew[]
+                });
             }
         }
     }
@@ -58,4 +65,14 @@ export class MoviesService {
     async getRandomItems() {
         return this.moviesRepository.findRandom()
     }
+
+    async findOne(id: string) {
+        return this.moviesRepository.find({id_themoviedb: Number(id)})
+    }
+
+    async insertRecommendation(createRecommendationDto: CreateRecommendationDto) {
+        return this.recommendationRepository.create({...createRecommendationDto,
+        date: new Date()})
+    }
+
 }

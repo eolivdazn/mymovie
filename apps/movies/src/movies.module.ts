@@ -6,11 +6,17 @@ import {MovieDocument, MovieSchema} from "./models/movies.schema";
 import {MoviesRepository} from "./movies.repository";
 import {ConfigModule} from "@nestjs/config";
 import * as Joi from 'joi';
+import {RecommendationRepository} from "./recommendation.repository";
+import {RecommendationDocument, RecommendationSchema} from "./models/recommendation.schema";
 
 @Module({
-  imports: [DatabaseModule, DatabaseModule.forFeature([{
-    name: MovieDocument.name, schema: MovieSchema
+  imports: [DatabaseModule,
+    DatabaseModule.forFeature([{
+    name: MovieDocument.name, schema: MovieSchema,
   }]),
+    DatabaseModule.forFeature([{
+      name: RecommendationDocument.name, schema: RecommendationSchema,
+    }]),
     LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -20,6 +26,6 @@ import * as Joi from 'joi';
     }),
   ],
   controllers: [MoviesController],
-  providers: [MoviesService ,MoviesRepository],
+  providers: [MoviesService ,MoviesRepository, RecommendationRepository],
 })
 export class MoviesModule {}
