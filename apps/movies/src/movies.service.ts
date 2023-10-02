@@ -3,9 +3,9 @@ import {MoviesRepository} from "./movies.repository";
 import {Movie} from "./interface/movie";
 import {Cast} from "./interface/cast";
 import {Crew} from "./interface/crew";
-import {string} from "joi";
 import {RecommendationRepository} from "./recommendation.repository";
 import {CreateRecommendationDto} from "./dto/create-recommendation";
+import {recommendRating} from "./help/recommend.rating";
 
 const API_KEY = process.env.API_KEY
 
@@ -71,10 +71,14 @@ export class MoviesService {
     }
 
     async insertRecommendation(createRecommendationDto: CreateRecommendationDto) {
-        return this.recommendationRepository.create({...createRecommendationDto,
-        like: createRecommendationDto.like,
-        desLike: createRecommendationDto.desLike,
-        date: new Date()})
+       if(createRecommendationDto.like.length === 3) {
+           await recommendRating(createRecommendationDto.like, this.moviesRepository)
+       }
+
+    //     return this.recommendationRepository.create({...createRecommendationDto,
+    //     like: createRecommendationDto.like,
+    //     desLike: createRecommendationDto.desLike,
+    //     date: new Date()})
     }
 
 }
