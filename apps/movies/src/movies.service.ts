@@ -72,6 +72,8 @@ export class MoviesService {
 
     async insertRecommendation(createRecommendationDto: CreateRecommendationDto) {
         return this.recommendationRepository.create({...createRecommendationDto,
+        like: createRecommendationDto.like,
+        desLike: createRecommendationDto.desLike,
         date: new Date()})
     }
 
