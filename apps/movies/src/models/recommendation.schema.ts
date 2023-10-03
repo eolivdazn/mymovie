@@ -13,6 +13,9 @@ export class RecommendationDocument extends AbstractDocument {
     @Prop()
     date: Date;
 
+    @Prop()
+    recommend: number;
+
 
 }
 

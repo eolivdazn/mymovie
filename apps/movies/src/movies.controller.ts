@@ -26,7 +26,6 @@ export class MoviesController {
   @Post('recommendation')
   async insertRecommendation(
       @Body() createRecommendationDto: CreateRecommendationDto,) {
-    console.log(createRecommendationDto)
     return this.moviesService.insertRecommendation(createRecommendationDto);
   }
 }

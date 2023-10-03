@@ -51,7 +51,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   async findRandom() {
     return this.model.aggregate([
       {
-        $sample: { size: 3 }
+        $sample: { size: 5 }
       }
     ]);
   }

@@ -5,7 +5,7 @@ import {Cast} from "./interface/cast";
 import {Crew} from "./interface/crew";
 import {RecommendationRepository} from "./recommendation.repository";
 import {CreateRecommendationDto} from "./dto/create-recommendation";
-import {recommendRating} from "./help/recommend.rating";
+import {moviesLikedAnalysis} from "./help/moviesLikedAnalysis";
 
 const API_KEY = process.env.API_KEY
 
@@ -71,14 +71,30 @@ export class MoviesService {
     }
 
     async insertRecommendation(createRecommendationDto: CreateRecommendationDto) {
-       if(createRecommendationDto.like.length === 3) {
-           await recommendRating(createRecommendationDto.like, this.moviesRepository)
-       }
+       if(createRecommendationDto.like.length >= 1) {
+           console.log('like')
+          const likedProperties =  await moviesLikedAnalysis(createRecommendationDto.like, this.moviesRepository)
+          console.log(likedProperties)
+//db.moviedocuments.find({ "genre_ids": { "$in": [80, 53, 18] }, rating: 7 },{rating:1,genre_ids:2, title:3, release_date:4, vote_average:5, id_themoviedb:6 }).sort({release_date: -1})
+           const bdRecommendation = await this.moviesRepository.find({
+                rating: {$in: likedProperties.recommendRating},
+                genre_ids: {$in: likedProperties.recommendGender},
+                cast: {$elemMatch: {name: {$in: likedProperties.recommendCast}}},
+           })
 
-    //     return this.recommendationRepository.create({...createRecommendationDto,
-    //     like: createRecommendationDto.like,
-    //     desLike: createRecommendationDto.desLike,
-    //     date: new Date()})
+           bdRecommendation.splice(bdRecommendation.findIndex(movie =>
+               createRecommendationDto.like.includes(Number(movie.id_themoviedb ||
+                   createRecommendationDto.desLike.includes(movie.id_themoviedb)))),1);
+
+           await this.recommendationRepository.create({
+                like: createRecommendationDto.like,
+                desLike: createRecommendationDto.desLike,
+               recommend: bdRecommendation[0].id_themoviedb,
+               date: new Date()
+           })
+
+           return [await bdRecommendation[0]]
+       }
     }
 
 }
