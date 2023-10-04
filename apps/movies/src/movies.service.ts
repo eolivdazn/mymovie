@@ -22,7 +22,7 @@ export class MoviesService {
             method: 'GET',
             headers: {
                 accept: 'application/json',
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZjIyMWU0MWZkZjAwNTJiODhlMWRmMTBjODEwYWI1MCIsInN1YiI6IjY0ZDM5YTlhZGQ5MjZhMDFlYjE4ZTI0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._mZ4FA3xW8-0aT4zDkdwZn1jgi8UQJkDOeAxXC8drnE`
+                Authorization: `Bearer ${API_KEY}`
             }
         };
 
@@ -41,7 +41,7 @@ export class MoviesService {
                 method: 'GET',
                 headers: {
                     accept: 'application/json',
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZjIyMWU0MWZkZjAwNTJiODhlMWRmMTBjODEwYWI1MCIsInN1YiI6IjY0ZDM5YTlhZGQ5MjZhMDFlYjE4ZTI0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._mZ4FA3xW8-0aT4zDkdwZn1jgi8UQJkDOeAxXC8drnE`
+                    Authorization: `Bearer ${API_KEY}`
                 }
             };
 
@@ -86,14 +86,20 @@ export class MoviesService {
                createRecommendationDto.like.includes(Number(movie.id_themoviedb ||
                    createRecommendationDto.desLike.includes(movie.id_themoviedb)))),1);
 
+           console.log(bdRecommendation,'empty')
+
+           if (bdRecommendation.length > 0) {
            await this.recommendationRepository.create({
                 like: createRecommendationDto.like,
                 desLike: createRecommendationDto.desLike,
                recommend: bdRecommendation[0].id_themoviedb,
                date: new Date()
            })
+               return [bdRecommendation[0]]
+           }else
+                return false
 
-           return [await bdRecommendation[0]]
+
        }
     }
 

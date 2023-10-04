@@ -15,7 +15,7 @@ export class MoviesController {
   getAllMovies(): Promise<any> {
     return this.moviesService.getAllMovies();
   }
-  @Get()
+  @Get('getInitialMovies')
   getInitialMovies(): Promise<Movie[]> {
     return this.moviesService.getRandomItems();
   }

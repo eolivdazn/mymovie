@@ -1,0 +1,13 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+          'build',
+          '-t',
+          'europe-southwest1-docker.pkg.dev/sleeper-399616/movies/production',
+          '-f',
+          'apps/movies/Dockerfile',
+          '.'
+        ]
+timeout: 600s
+
+
