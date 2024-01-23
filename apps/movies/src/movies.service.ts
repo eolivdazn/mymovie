@@ -7,7 +7,7 @@ import {RecommendationRepository} from "./recommendation.repository";
 import {CreateRecommendationDto} from "./dto/create-recommendation";
 import {moviesLikedAnalysis} from "./help/moviesLikedAnalysis";
 
-const API_KEY = process.env.API_KEY
+const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZjIyMWU0MWZkZjAwNTJiODhlMWRmMTBjODEwYWI1MCIsInN1YiI6IjY0ZDM5YTlhZGQ5MjZhMDFlYjE4ZTI0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._mZ4FA3xW8-0aT4zDkdwZn1jgi8UQJkDOeAxXC8drnE"
 
 @Injectable()
 export class MoviesService {
