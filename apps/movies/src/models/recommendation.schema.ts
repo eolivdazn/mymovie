@@ -16,6 +16,9 @@ export class RecommendationDocument extends AbstractDocument {
     @Prop()
     recommend: number;
 
+    @Prop()
+    email?: string;
+
 
 }
 

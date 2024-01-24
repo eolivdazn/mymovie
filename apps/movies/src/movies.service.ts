@@ -6,14 +6,16 @@ import {Crew} from "./interface/crew";
 import {RecommendationRepository} from "./recommendation.repository";
 import {CreateRecommendationDto} from "./dto/create-recommendation";
 import {moviesLikedAnalysis} from "./help/moviesLikedAnalysis";
+import {GetRecommendationDto} from "./dto/get-recommendation";
 
 const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZjIyMWU0MWZkZjAwNTJiODhlMWRmMTBjODEwYWI1MCIsInN1YiI6IjY0ZDM5YTlhZGQ5MjZhMDFlYjE4ZTI0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._mZ4FA3xW8-0aT4zDkdwZn1jgi8UQJkDOeAxXC8drnE"
 
 @Injectable()
 export class MoviesService {
 
-    constructor(private readonly moviesRepository: MoviesRepository,
-                private readonly recommendationRepository: RecommendationRepository) {
+    constructor(
+        private readonly moviesRepository: MoviesRepository,
+        private readonly recommendationRepository: RecommendationRepository) {
     }
 
     async getCasts(id: number) {
@@ -66,8 +68,12 @@ export class MoviesService {
         return this.moviesRepository.findRandom()
     }
 
-    async findOne(id: string) {
+    async findOne(id: any) {
         return this.moviesRepository.find({id_themoviedb: Number(id)})
+    }
+
+    async findRecommendationByEmail(getRecommendation: GetRecommendationDto) {
+        return this.recommendationRepository.find({email: String(getRecommendation.email)})
     }
 
     async insertRecommendation(createRecommendationDto: CreateRecommendationDto) {
@@ -93,6 +99,7 @@ export class MoviesService {
                 like: createRecommendationDto.like,
                 desLike: createRecommendationDto.desLike,
                recommend: bdRecommendation[0].id_themoviedb,
+               email: createRecommendationDto.email || '',
                date: new Date()
            })
                return [bdRecommendation[0]]
