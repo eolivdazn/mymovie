@@ -40,7 +40,7 @@ export class MoviesController {
     const rec = recommendation.map(async (el) => {
       const data =  await this.moviesService.findOne(el.recommend as Number);
       return{
-        movie: data,
+        movie: data[0],
         recommendationDate: el.date
       }
     });
