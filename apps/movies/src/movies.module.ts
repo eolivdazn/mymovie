@@ -22,7 +22,7 @@ import {RecommendationDocument, RecommendationSchema} from "./models/recommendat
       isGlobal: true,
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
-        IMDB: Joi.string().required(),
+        API_KEY: Joi.string().required(),
       }),
     }),
     HealthModule,

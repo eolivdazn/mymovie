@@ -58,16 +58,12 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## Support
+## Notes
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+To run the service in GPC is necessary to deploy as a engine APP. To consume mongoDb Atlas is necessary to create : 
+ - Set up a static outbound IP address
+    - https://cloud.google.com/appengine/docs/legacy/standard/python/outbound-ip-addresses#static-ip
+ - Create a Serverless VPC Access connector
+   - https://cloud.google.com/appengine/docs/standard/shared-vpc-host-project#gcloud
+ - Setup a static ip and whitelist in Mongo Atlas
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
