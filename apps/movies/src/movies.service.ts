@@ -77,6 +77,7 @@ export class MoviesService {
     }
 
     async insertRecommendation(createRecommendationDto: CreateRecommendationDto) {
+      console.log(createRecommendationDto,"createRecommendationDto")
        if(createRecommendationDto.like.length >= 1) {
            console.log('like')
           const likedProperties =  await moviesLikedAnalysis(createRecommendationDto.like, this.moviesRepository)
@@ -102,9 +103,10 @@ export class MoviesService {
                email: createRecommendationDto.email || '',
                date: new Date()
            })
-               return [bdRecommendation[0]]
+             const result = bdRecommendation[0]
+               return { data : result }
            }else
-                return false
+                return { data : false  }
 
 
        }
