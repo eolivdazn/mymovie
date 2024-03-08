@@ -79,7 +79,7 @@
     "semantic-release": "^23.0.2"
   },
   "release": {
-    "branches": ["main","next"]
+    "branches": ["main"]
   }
 
 }
