@@ -1,7 +1,7 @@
 {
   "name": "mymovie",
   "version": "0.0.1",
-  "description": "",
+  "description": "backend for movies recommendations",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
