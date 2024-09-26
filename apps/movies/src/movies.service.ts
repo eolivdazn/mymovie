@@ -93,7 +93,7 @@ export class MoviesService {
                createRecommendationDto.like.includes(Number(movie.id_themoviedb ||
                    createRecommendationDto.desLike.includes(movie.id_themoviedb)))),1);
 
-           console.log(bdRecommendation,'empty')
+           console.log(bdRecommendation,' empty')
 
            if (bdRecommendation.length > 0) {
            await this.recommendationRepository.create({
