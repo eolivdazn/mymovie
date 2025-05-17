@@ -7,8 +7,12 @@ import {RecommendationRepository} from "./recommendation.repository";
 import {CreateRecommendationDto} from "./dto/create-recommendation";
 import {moviesLikedAnalysis} from "./help/moviesLikedAnalysis";
 import {GetRecommendationDto} from "./dto/get-recommendation";
+import { analysisResultDto } from "./interface/analysisResult";
+import { getMovieRecommendationFromDeepSeek } from "./help/deepseekApi";
+import { fetchMovieById } from "./help/tmbd";
 
 const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZjIyMWU0MWZkZjAwNTJiODhlMWRmMTBjODEwYWI1MCIsInN1YiI6IjY0ZDM5YTlhZGQ5MjZhMDFlYjE4ZTI0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._mZ4FA3xW8-0aT4zDkdwZn1jgi8UQJkDOeAxXC8drnE"
+let recommendedMovieByDeepSeek: any
 
 @Injectable()
 export class MoviesService {
@@ -80,7 +84,7 @@ export class MoviesService {
       console.log(createRecommendationDto,"createRecommendationDto")
        if(createRecommendationDto.like.length >= 1) {
            console.log('like')
-          const likedProperties =  await moviesLikedAnalysis(createRecommendationDto.like, this.moviesRepository)
+          const likedProperties: analysisResultDto =  await moviesLikedAnalysis(createRecommendationDto.like, this.moviesRepository)
           console.log(likedProperties,"likedProperties")
 //db.moviedocuments.find({ "genre_ids": { "$in": [80, 53, 18] }, rating: 7 },{rating:1,genre_ids:2, title:3, release_date:4, vote_average:5, id_themoviedb:6 }).sort({release_date: -1})
            const bdRecommendation = await this.moviesRepository.find({
@@ -94,19 +98,28 @@ export class MoviesService {
                    createRecommendationDto.desLike.includes(movie.id_themoviedb)))),1);
 
            console.log(bdRecommendation,'empty')
+         if(bdRecommendation.length === 0) {
+            const recommendedMovieByDeepSeekId = await getMovieRecommendationFromDeepSeek(likedProperties);
+            console.log(recommendedMovieByDeepSeekId, 'recommendedMovieByDeepSeekId');
+           const match = recommendedMovieByDeepSeekId.match(/"data":\s*(\d+)/);
+           const id = match ? Number(match[1]) : null;
+           recommendedMovieByDeepSeek = await fetchMovieById(id as number);
+
+
+         }
 
            if (bdRecommendation.length > 0) {
-           // await this.recommendationRepository.create({
-           //      like: createRecommendationDto.like,
-           //      desLike: createRecommendationDto.desLike,
-           //     recommend: bdRecommendation[0].id_themoviedb,
-           //     email: createRecommendationDto.email || '',
-           //     date: new Date()
-           // })
+           await this.recommendationRepository.create({
+                like: createRecommendationDto.like,
+                desLike: createRecommendationDto.desLike,
+               recommend: bdRecommendation[0].id_themoviedb,
+               email: createRecommendationDto.email || '',
+               date: new Date()
+           })
              const result = bdRecommendation[0]
                return { data : result }
            }else
-                return { data : false  }
+                return { data : recommendedMovieByDeepSeek  }
 
 
        }
