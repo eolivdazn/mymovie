@@ -81,7 +81,7 @@ export class MoviesService {
        if(createRecommendationDto.like.length >= 1) {
            console.log('like')
           const likedProperties =  await moviesLikedAnalysis(createRecommendationDto.like, this.moviesRepository)
-          console.log(likedProperties)
+          console.log(likedProperties,"likedProperties")
 //db.moviedocuments.find({ "genre_ids": { "$in": [80, 53, 18] }, rating: 7 },{rating:1,genre_ids:2, title:3, release_date:4, vote_average:5, id_themoviedb:6 }).sort({release_date: -1})
            const bdRecommendation = await this.moviesRepository.find({
                 rating: {$in: likedProperties.recommendRating},
@@ -96,13 +96,13 @@ export class MoviesService {
            console.log(bdRecommendation,'empty')
 
            if (bdRecommendation.length > 0) {
-           await this.recommendationRepository.create({
-                like: createRecommendationDto.like,
-                desLike: createRecommendationDto.desLike,
-               recommend: bdRecommendation[0].id_themoviedb,
-               email: createRecommendationDto.email || '',
-               date: new Date()
-           })
+           // await this.recommendationRepository.create({
+           //      like: createRecommendationDto.like,
+           //      desLike: createRecommendationDto.desLike,
+           //     recommend: bdRecommendation[0].id_themoviedb,
+           //     email: createRecommendationDto.email || '',
+           //     date: new Date()
+           // })
              const result = bdRecommendation[0]
                return { data : result }
            }else

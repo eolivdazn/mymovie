@@ -28,6 +28,7 @@ export class MoviesController {
   async insertRecommendation(
     @Body() createRecommendationDto: CreateRecommendationDto,
   ) {
+    // createRecommendationDto = { email: 'test@test', like: [1, 2, 3], desLike: [] };
     return this.moviesService.insertRecommendation(createRecommendationDto);
   }
 
@@ -36,7 +37,6 @@ export class MoviesController {
     console.log(getRecommendation, 'getRecommendation');
     const recommendation =
       await this.moviesService.findRecommendationByEmail(getRecommendation);
-
     const rec = recommendation.map(async (el) => {
       const data =  await this.moviesService.findOne(el.recommend as Number);
       return{

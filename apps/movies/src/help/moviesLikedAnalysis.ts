@@ -1,10 +1,13 @@
 import {MoviesRepository} from "../movies.repository";
 import {getSelectedMoviesData} from "./getSelectedMoviesData";
 import {findDuplicates} from "./findDuplicates";
+import {getMovieRecommendationFromDeepSeek} from "./deepseekApi";
+
 
 export async function moviesLikedAnalysis(selectedMovies: number[] , repository: MoviesRepository) {
 
     const moviesData = await getSelectedMoviesData(selectedMovies, repository)
+    console.log(moviesData,"moviesData")
 
     let sameRating = moviesData.map((movie) => movie.rating)
     let sameGender =  moviesData.map((movie) =>  movie.genre_ids).flat()
@@ -23,6 +26,16 @@ export async function moviesLikedAnalysis(selectedMovies: number[] , repository:
     // console.log(sameGender)
     // console.log(sameCast)
     // console.log(sameCrew)
+    const analysisResult = {
+        recommendRating: sameRating,
+        recommendGender: sameGender,
+        recommendCast: sameCast.slice(0, 4),
+        recommendCrew: sameCrew.slice(0, 4),
+    };
+
+    const recommendedMovie = await getMovieRecommendationFromDeepSeek(analysisResult);
+
+
 
     return{
         recommendRating: sameRating,
