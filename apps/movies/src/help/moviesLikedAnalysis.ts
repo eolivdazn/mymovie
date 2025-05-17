@@ -27,7 +27,7 @@ export async function moviesLikedAnalysis(selectedMovies: number[] , repository:
     return{
         notRecommendId: selectedMovies,
         recommendRating: sameRating,
-        recommendGender: getGenreName(sameGener),
+        recommendGender: sameGener.map(x => getGenreName(x)),
         recommendCast: sameCast.slice(0, 4),
         recommendCrew: sameCrew.slice(0, 4),
     }

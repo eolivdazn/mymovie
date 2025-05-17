@@ -28,7 +28,6 @@ export class MoviesController {
   async insertRecommendation(
     @Body() createRecommendationDto: CreateRecommendationDto,
   ) {
-    // createRecommendationDto = { email: 'test@test', like: [1, 2, 3], desLike: [] };
     return this.moviesService.insertRecommendation(createRecommendationDto);
   }
 
